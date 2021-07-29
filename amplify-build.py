@@ -44,7 +44,7 @@ if __name__ == '__main__':
 
     app_id = list_backend_environment(app_name=args.app_name)
     if app_id is None:
-        app_id = create_app(app_name=args.app_name)
+        app_id = create_backend(app_name=args.app_name)
     
     # create_branch(app_id=app_id, branch_name=args.branch_name)
     # job_id, upload_url = create_deployment(app_id=app_id, branch_name=args.branch_name)
