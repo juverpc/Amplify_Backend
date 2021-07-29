@@ -3,5 +3,4 @@ phases:
  
   build:
     commands:
-      - npm install
-      - python3 amplify-build.py --app-name "first_backend_test" --app-id "main" --app-backend-environment-name "first_backend_test_environment" --dep-loc ./deployment.zip
+      - python3 amplify-build.py --app-name "first_backend_test" --dep-loc ./deployment.zip
