@@ -2,19 +2,19 @@ import boto3
 import requests
 import argparse
 
-amplify_client = boto3.client('amplifybackend')
+amplify_client = boto3.client('amplify')
 
-# def list_apps(app_name):
-#     apps = amplify_client.list_apps()['apps']
-#     for app in apps:
-#         if app['name'] == app_name:
-#             return app['appId']
+def list_backend_environment(app_name):
+    apps = amplify_client.list_backend_environments()['apps']
+    for app in apps:
+        if app['environmentName'] == app_name:
+            return app['appId']
     
-#     return None
+    return None
 
-def create_app(app_name, app_id, backend_environment_name):
-    resp = amplify_client.create_backend(AppName=app_name, AppId=app_id, BackendEnvironmentName=backend_environment_name)
-    return resp['BackendEnvironmentName']['AppId']
+def create_backend(app_name, app_id):
+    resp = amplify_client.create_backend_environment(environmentName=app_name, AppId=app_id)
+    return resp['environmentName']
 
 # def create_branch(app_id, branch_name):
 #     try:
@@ -37,16 +37,14 @@ def start_deployment(app_id, job_id):
     return resp['jobSummary']['status']
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='AWS Amplify App Build Script')
+    parser = argparse.ArgumentParser(description='AWS Amplify backend Environment Build Script')
     parser.add_argument('--app-name', help='Amplify Backend Name', default='amplify-deploy', dest='app_name')
-    parser.add_argument('--app-name', help='Amplify Backend ID', default='amplify-deploy', dest='app_id')
-    parser.add_argument('--app-name', help='Amplify Backend Environment Name', default='amplify-deploy', dest='backend_environment_name')
     parser.add_argument('--dep-loc', help='Deployment package location', default='deployment.zip', dest='dep_loc')
     args = parser.parse_args()
 
-    # app_id = list_apps(app_name=args.app_name)
-    # if app_id is None:
-    #     app_id = create_app(app_name=args.app_name)
+    app_id = list_backend_environment(app_name=args.app_name)
+    if app_id is None:
+        app_id = create_app(app_name=args.app_name)
     
     # create_branch(app_id=app_id, branch_name=args.branch_name)
     # job_id, upload_url = create_deployment(app_id=app_id, branch_name=args.branch_name)
